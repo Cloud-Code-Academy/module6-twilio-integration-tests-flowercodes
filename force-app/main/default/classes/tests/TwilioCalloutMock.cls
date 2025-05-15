@@ -18,6 +18,8 @@ public class TwilioCalloutMock implements HttpCalloutMock {
      */
     public TwilioCalloutMock(Integer statusCode, String responseBody) {
         // TODO: Initialize the mock with the provided status code and response body
+        this.statusCode = statusCode;
+        this.responseBody = responseBody;
     }
     
     /**
@@ -26,6 +28,8 @@ public class TwilioCalloutMock implements HttpCalloutMock {
      */
     public TwilioCalloutMock(String exceptionMessage) {
         // TODO: Initialize the mock to throw an exception with the given message
+        this.throwException = true;
+        this.exceptionMessage = exceptionMessage;
     }
     
     /**
@@ -34,7 +38,7 @@ public class TwilioCalloutMock implements HttpCalloutMock {
      */
     public static TwilioCalloutMock createExceptionMock() {
         // TODO: Return a new instance that will throw an exception with a default message
-        return null;
+        return new TwilioCalloutMock('Simulated exception for testing');
     }
     
     /**
@@ -47,6 +51,14 @@ public class TwilioCalloutMock implements HttpCalloutMock {
         // TODO: Implement the response logic based on the configuration
         // If throwException is true, throw a CalloutException
         // Otherwise, create and return an HttpResponse with the appropriate status code and body
-        return null;
+        if(throwException == true){
+            throw new CalloutException(exceptionMessage);
+        }
+        else{
+            HttpResponse response = new HttpResponse();
+            response.setStatusCode(statusCode);
+            response.setBody(responseBody);
+            return response;
+        }
     }
 } 
